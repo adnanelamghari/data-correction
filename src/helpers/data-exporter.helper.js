@@ -6,8 +6,10 @@ class DataExporterHelper {
 
     }
 
-    exportAsJson(data) {
-        fs.writeFileSync('data/exported/result.json', JSON.stringify(data))
+    exportAsJson(data, fileName) {
+        const outputUrl = `data/exported/${fileName}.json`;
+        fs.writeFileSync(outputUrl, JSON.stringify(data));
+        console.log('          > File exported successfully in ' + outputUrl)
     }
 
     exportedAsAnOtherFormat(data) {

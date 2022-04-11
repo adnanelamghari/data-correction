@@ -1,11 +1,14 @@
 const RequestHelper = require('./helpers/request.helper');
+const DataExporterHelper = require('./helpers/data-exporter.helper');
 const ENV = require('../env');
 
 class Controller {
     requestHelper;
+    dataExporterHelper;
 
     constructor() {
         this.requestHelper = new RequestHelper();
+        this.dataExporterHelper = new DataExporterHelper();
     }
 
     async start() {

@@ -1,0 +1,23 @@
+{
+  "name": "data-correction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --timeout=20000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adnanelamghari/data-correction.git"
+  },
+  "author": "Adnane Lamghari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adnanelamghari/data-correction/issues"
+  },
+  "homepage": "https://github.com/adnanelamghari/data-correction#readme",
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  }
+}

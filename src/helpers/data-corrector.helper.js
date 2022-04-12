@@ -17,10 +17,9 @@ class DataCorrectorHelper {
             const userJob = jobs[userId];
             const userInformations = informations[userId];
 
-            // TODO improuve the following code :
-            const name = !!user.name && user.name !== '#ERROR' ? user.name : (userJob.name || userInformations.name);
-            const age = (userInformations && !!userInformations.age) ? userInformations.age : (userJob.age || user.age);
-            const city = userInformations && userInformations.city ? this.correctCity(userInformations.city) : undefined;
+            const name = user.name && user.name !== '#ERROR' ? user.name : (userJob?.name || userInformations?.name);
+            const age = userInformations?.age ? userInformations.age : (userJob.age || user.age);
+            const city = userInformations?.city ? this.correctCity(userInformations.city) : undefined;
 
             sanitizedData[userId] = this.sanitizeObject({
                 job: userJob ? userJob.job : undefined,
@@ -29,7 +28,6 @@ class DataCorrectorHelper {
                 city: city
             });
         });
-
         return sanitizedData;
     }
 
@@ -39,11 +37,12 @@ class DataCorrectorHelper {
      * @returns {string}
      */
     correctName(name) {
+        // replaceAll is now supported by popular browsers
         return name
-            .replace('3', 'e')
-            .replace('4', 'a')
-            .replace('1', 'i')
-            .replace('0', 'o');
+            .replaceAll('3', 'e') // .replace(/3/g, 'e')
+            .replaceAll('4', 'a')
+            .replaceAll('1', 'i')
+            .replaceAll('0', 'o');
     }
 
     /**

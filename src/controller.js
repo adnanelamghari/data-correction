@@ -3,6 +3,13 @@ const DataExporterHelper = require('./helpers/data-exporter.helper');
 const DataCorrectorHelper = require('./helpers/data-corrector.helper');
 const ENV = require('../env');
 
+/**
+ * @typedef {Object} UserData
+ * @property {object} informations
+ * @property {object} jobs
+ * @property {object} users
+ */
+
 class Controller {
     requestHelper;
     dataExporterHelper;
@@ -27,17 +34,25 @@ class Controller {
 
             const correctedData = this.dataCorrectorHelper.correctData(informations, jobs, users);
             this.dataExporterHelper.exportAsJson(correctedData, 'results');
-            await this.requestHelper.post(`${ENV.KRAT_URL}${ENV.KRAT_ID}`, correctedData);
-            console.log('          > File uploaded successfully ' + ENV.KRAT_URL + ENV.KRAT_ID);
+            await this.uploadDataToKrat(correctedData);
         } catch (error) {
             console.error(error);
         }
     }
 
+    /**
+     * Uploads data to krat server
+     * @param data {object}
+     * @returns {Promise<void>}
+     */
+    async uploadDataToKrat(data) {
+        await this.requestHelper.post(ENV.KRAT_URL, `/${ENV.KRAT_ID}`, data);
+        console.log(`          > File uploaded successfully to  ${ENV.KRAT_URL}/${ENV.KRAT_ID}`);
+    }
 
     /**
      * fetches the jsons files from the server
-     * @returns {{}|*}
+     * @returns {UserData}
      */
     getJsonFiles() {
         const data = {};

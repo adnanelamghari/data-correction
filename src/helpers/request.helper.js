@@ -20,37 +20,39 @@ class RequestHelper {
                 resp.on('end', () => {
                     resolve(JSON.parse(data));
                 });
-            }).on("error", (error) => {
-                reject(error);
-            });
+            }).on("error", reject);
         });
     }
 
     /**
      *
-     * @param url {string}
+     * @param host {string}
+     * @param path {string}
      * @param data {*}
      * @returns {Promise<*>}
      */
-    post(url, data) {
+    post(host, path, data) {
         return new Promise((resolve, reject) => {
             const options = {
+                host: host,
+                path: path,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             }
-            https.request(options, (resp) => {
-                let data = '';
-                resp.on('data', (chunk) => {
-                    data += chunk;
-                });
-                resp.on('end', () => {
-                    resolve(JSON.parse(data));
-                });
-            }).on("error", (error) => {
-                reject(error);
-            });
+            let dataAsString = JSON.stringify(data);
+            const req = https.request(options, (res) => {
+                    let buffers = [];
+                    res.on('error', reject);
+                    res.on('data', buffer => buffers.push(buffer));
+                    res.on('end', () => {
+                        res.statusCode === 200 ? resolve(Buffer.concat(buffers)) : reject(Buffer.concat(buffers))
+                    });
+                }
+            );
+            req.write(dataAsString);
+            req.end();
         });
     }
 }

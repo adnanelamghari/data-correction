@@ -19,10 +19,11 @@ class DataCorrectorHelper {
 
             const name = user.name && user.name !== '#ERROR' ? user.name : (userJob?.name || userInformations?.name);
             const age = userInformations?.age ? userInformations.age : (userJob.age || user.age);
+            const job = userJob?.job ? userJob.job : (userInformations.job || user.job)
             const city = userInformations?.city ? this.correctCity(userInformations.city) : undefined;
 
             sanitizedData[userId] = this.sanitizeObject({
-                job: userJob ? userJob.job : undefined,
+                job: job,
                 name: this.correctName(name),
                 age: age,
                 city: city
@@ -38,11 +39,12 @@ class DataCorrectorHelper {
      */
     correctName(name) {
         // replaceAll is now supported by popular browsers
-        return name
+        const fixedName = name
             .replaceAll('3', 'e') // .replace(/3/g, 'e')
             .replaceAll('4', 'a')
             .replaceAll('1', 'i')
             .replaceAll('0', 'o');
+        return this.capitalize(fixedName);
     }
 
     /**
@@ -51,10 +53,7 @@ class DataCorrectorHelper {
      * @returns {string}
      */
     correctCity(city) {
-        const capitalize = (string) => {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        };
-        return capitalize(city.toLowerCase());
+        return this.capitalize(city.toLowerCase());
     }
 
     /**
@@ -69,6 +68,15 @@ class DataCorrectorHelper {
             }
         });
         return object;
+    }
+
+    /**
+     * Uppercase the first letter of a string
+     * @param string {string}
+     * @returns {string}
+     */
+    capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }
 

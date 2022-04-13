@@ -33,8 +33,16 @@ class RequestHelper {
      */
     post(host, path, data) {
         return new Promise((resolve, reject) => {
+            /**
+             * Removes the protocol from an url
+             * @param url {string}
+             * @returns {string}
+             */
+            const removeProtocolFromUrl = (url) => {
+                return url.replace(/(^\w+:|^)\/\//, '');
+            }
             const options = {
-                host: host,
+                host: removeProtocolFromUrl(host),
                 path: path,
                 method: 'POST',
                 headers: {

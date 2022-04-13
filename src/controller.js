@@ -34,20 +34,10 @@ class Controller {
 
             const correctedData = this.dataCorrectorHelper.correctData(informations, jobs, users);
             this.dataExporterHelper.exportAsJson(correctedData, 'results');
-            await this.uploadDataToKrat(correctedData);
+            await this.dataExporterHelper.uploadDataToKrat(correctedData);
         } catch (error) {
             console.error(error);
         }
-    }
-
-    /**
-     * Uploads data to krat server
-     * @param data {object}
-     * @returns {Promise<void>}
-     */
-    async uploadDataToKrat(data) {
-        await this.requestHelper.post(ENV.KRAT_URL, `/${ENV.KRAT_ID}`, data);
-        console.log(`          > File uploaded successfully to  ${ENV.KRAT_URL}/${ENV.KRAT_ID}`);
     }
 
     /**

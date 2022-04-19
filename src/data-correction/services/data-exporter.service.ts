@@ -13,7 +13,7 @@ export function exportAsJson(data: any, fileName: string): void {
         fs.mkdirSync(outputUrl, {recursive: true});
     }
     fs.writeFileSync(`${outputUrl}/${fileName}.json`, JSON.stringify(data));
-    console.log('          > File exported successfully in ' + outputUrl);
+    console.log(`          > File exported successfully in  ${outputUrl}/${fileName}.json`);
 }
 
 /**
